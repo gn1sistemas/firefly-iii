@@ -169,7 +169,7 @@ function initCostCenterAC() {
                                         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                                         queryTokenizer: Bloodhound.tokenizers.whitespace,
                                         prefetch: {
-                                            url: 'json/cost_centers?uid=' + uid,
+                                            url: 'json/cost-centers?uid=' + uid,
                                             filter: function (list) {
                                                 return $.map(list, function (name) {
                                                     return {name: name};
@@ -177,7 +177,7 @@ function initCostCenterAC() {
                                             }
                                         },
                                         remote: {
-                                            url: 'json/cost_centers?search=%QUERY&uid=' + uid,
+                                            url: 'json/cost-centers?search=%QUERY&uid=' + uid,
                                             wildcard: '%QUERY',
                                             filter: function (list) {
                                                 return $.map(list, function (name) {
