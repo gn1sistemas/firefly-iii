@@ -145,6 +145,7 @@ function initializeAutoComplete() {
     initExpenseAC();
     initRevenueAC();
     initCategoryAC();
+    initCostCenterAC();
 }
 
 /**

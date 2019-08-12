@@ -149,6 +149,26 @@ class RecurringRepository implements RecurringRepositoryInterface
     }
 
     /**
+     * Get the cost center from a recurring transaction transaction.
+     *
+     * @param RecurrenceTransaction $recTransaction
+     *
+     * @return null|string
+     */
+    public function getCostCenter(RecurrenceTransaction $recTransaction): ?string
+    {
+        $return = '';
+        /** @var RecurrenceTransactionMeta $meta */
+        foreach ($recTransaction->recurrenceTransactionMeta as $meta) {
+            if ('cost_center_name' === $meta->name) {
+                $return = (string)$meta->value;
+            }
+        }
+
+        return '' === $return ? null : $return;
+    }
+
+    /**
      * Returns the journals created for this recurrence, possibly limited by time.
      *
      * @param Recurrence  $recurrence

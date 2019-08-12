@@ -51,6 +51,7 @@ use FireflyIII\TransactionRules\Triggers\AmountLess;
 use FireflyIII\TransactionRules\Triggers\AmountMore;
 use FireflyIII\TransactionRules\Triggers\BudgetIs;
 use FireflyIII\TransactionRules\Triggers\CategoryIs;
+use FireflyIII\TransactionRules\Triggers\CostCenterIs;
 use FireflyIII\TransactionRules\Triggers\CurrencyIs;
 use FireflyIII\TransactionRules\Triggers\DescriptionContains;
 use FireflyIII\TransactionRules\Triggers\DescriptionEnds;
@@ -386,6 +387,7 @@ return [
         'description_is'        => DescriptionIs::class,
         'transaction_type'      => TransactionType::class,
         'category_is'           => CategoryIs::class,
+        'cost_center_is'        => CostCenterIs::class,
         'budget_is'             => BudgetIs::class,
         'tag_is'                => TagIs::class,
         'currency_is'           => CurrencyIs::class,
@@ -405,7 +407,9 @@ return [
     ],
     'rule-actions'                 => [
         'set_category'            => SetCategory::class,
+        'set_cost_center'         => SetCostCenter::class,
         'clear_category'          => ClearCategory::class,
+        'clear_cost_center'       => ClearCostCenter::class,
         'set_budget'              => SetBudget::class,
         'clear_budget'            => ClearBudget::class,
         'add_tag'                 => AddTag::class,
@@ -427,6 +431,7 @@ return [
     ],
     'context-rule-actions'         => [
         'set_category',
+        'set_cost_center',
         'set_budget',
         'add_tag',
         'remove_tag',
@@ -461,6 +466,7 @@ return [
         'description_is',
         'transaction_type',
         'category_is',
+        'cost_center_is',
         'budget_is',
         'tag_is',
         'currency_is',

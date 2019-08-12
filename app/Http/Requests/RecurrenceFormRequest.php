@@ -85,7 +85,8 @@ class RecurrenceFormRequest extends Request
                     'budget_name'           => null,
                     'category_id'           => null,
                     'category_name'         => $this->string('category'),
-
+                    'cost_center_id'        => null,
+                    'cost_center_name'      => $this->string('cost_center'),
                 ],
             ],
             'meta'         => [
