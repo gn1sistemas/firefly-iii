@@ -26,6 +26,7 @@ namespace FireflyIII\Services\Internal\Support;
 use Exception;
 use FireflyIII\Factory\BudgetFactory;
 use FireflyIII\Factory\CategoryFactory;
+use FireflyIII\Factory\CostCenterFactory;
 use FireflyIII\Factory\PiggyBankFactory;
 use FireflyIII\Factory\TransactionCurrencyFactory;
 use FireflyIII\Models\Account;
@@ -125,6 +126,11 @@ trait RecurringTransactionTrait
             $categoryFactory->setUser($recurrence->user);
             $category = $categoryFactory->findOrCreate($array['category_id'], $array['category_name']);
 
+            /** @var CostCenterFactory $costCenterFactory */
+            $costCenterFactory = app(CostCenterFactory::class);
+            $costCenterFactory->setUser($recurrence->user);
+            $costCenter = $costCenterFactory->findOrCreate($array['cost_center_id'], $array['cost_center_name']);
+
             // create recurrence transaction meta:
             if (null !== $budget) {
                 RecurrenceTransactionMeta::create(
@@ -141,6 +147,15 @@ trait RecurringTransactionTrait
                         'rt_id' => $transaction->id,
                         'name'  => 'category_name',
                         'value' => $category->name,
+                    ]
+                );
+            }
+            if (null !== $costCenter) {
+                RecurrenceTransactionMeta::create(
+                    [
+                        'rt_id' => $transaction->id,
+                        'name' => 'cost_center_name',
+                        'value' => $costCenter->name,
                     ]
                 );
             }

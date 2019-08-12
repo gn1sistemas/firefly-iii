@@ -116,12 +116,16 @@
                         {# BUDGET ONLY WHEN CREATING A WITHDRAWAL #}
                         {% set budgetId = 0 %}
                         {% set categoryName = '' %}
+                        {% set costCenterName = '' %}
                         {% for metaValue in array.transactions[0].meta %}
                             {% if metaValue.name == 'budget_id' %}
                                 {% set budgetId = metaValue.value %}
                             {% endif %}
                             {% if metaValue.name == 'category_name' %}
                                 {% set categoryName = metaValue.value %}
+                            {% endif %}
+                            {% if metaValue.name == 'cost_center_name' %}
+                                {% set costCenterName = metaValue.value %}
                             {% endif %}
                         {% endfor %}
 
@@ -134,6 +138,9 @@
 
                         {# CATEGORY ALWAYS #}
                         {{ ExpandedForm.text('category',categoryName) }}
+
+                        {# COST CENTER ALWAYS #}
+                        {{ ExpandedForm.text('cost_center',costCenterName) }}
 
                         {# TAGS #}
                         {% set tags = '' %}
