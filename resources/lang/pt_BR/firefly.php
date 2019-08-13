@@ -56,7 +56,7 @@ return [
     'create_new_transaction'                     => 'Criar nova transação',
     'go_to_asset_accounts'                       => 'Veja suas contas ativas',
     'go_to_budgets'                              => 'Vá para seus orçamentos',
-    'go_to_categories'                           => 'Vá para suos planos de contas',
+    'go_to_categories'                           => 'Vá para seus planos de contas',
     'go_to_bills'                                => 'Vá para suas faturas',
     'go_to_expense_accounts'                     => 'Veja suas despesas',
     'go_to_revenue_accounts'                     => 'Veja suas receitas',
