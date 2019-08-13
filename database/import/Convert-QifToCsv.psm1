@@ -65,7 +65,9 @@ function Convert-QifToCsv {
         if($_ -match $regex){
             
             if($_ -eq "^"){  
-                $lines.Add($qifLine)
+                #if($qifLine.Date.year -eq 2019 -and $qifLine.Date.month -eq 01) {
+                    $lines.Add($qifLine)
+                #}
                 
                 $qifLine = [qif]::new()
             } elseif ($_ -eq "!Type:Cash") {
@@ -100,30 +102,32 @@ function Convert-QifToCsv {
                     }
                     "L" {  
 
-                        if ($qifLine.Payee -eq "Transferencia entre contas") {
-                            return
-                        }
-                        # Category / Event
+                        # Category / Cost center
                         $item = $value.ToString().Split('/')
-                        
+
                         # Categories
-                        $categories = $item[0]
-                        $category = $categories.ToString().Split(':')
-                        $qifLine.LCategory = $category[0]
+                        $category = $item[0].ToString().Replace('[', '').Replace(']', '')
+
+                        $prefix = ""
+
+                        if ($qifLine.Payee -in "Transferencia entre contas") {
+
+                            if($qifLine.TAmount -gt 0){
+                                $prefix = "Transferido de : "
+                            } else {
+                                $prefix = "Transferido para : "
+                            }
+
+                            # Alterna o nome do favorecido
+                            $qifLine.Payee = $category
+                        }
+
+                        $qifLine.LCategory = $prefix + $category
 
                         # Cost center
                         $costCenter = $item[1]
                         $qifLine.CostCenter = $costCenter
-
-                        # Tags
-                        #$eventTags = ''
-                        #
-                        #if ($events.Length -gt 0) {
-                        #    $eventTags = $events.ToString().Split(':')
-                        #}
-
-                        #$eventTags += $categories.ToString().Replace(':', ' - ')
-                        #$qifLine.CostCenter = $eventTags -join ','
+                        
                     }
                     "M" {  
                         $qifLine.Memo = $value
@@ -164,9 +168,11 @@ function Convert-QifToCsv {
         
         # Formata na sequencia padronizada
         $line = "$date|$TAmount|$ClearedStatus|$Payee|$Num|$LCategory|$CostCenter|$Memo"
-        
-        # Adiciona a linha no arquivo de saída
-        Add-Content $outputFile -Value $line -Encoding UTF8
+
+        if($date.ToString().IndexOf("/02/2019") -gt 0) {
+            # Adiciona a linha no arquivo de saída
+            Add-Content $outputFile -Value $line -Encoding UTF8
+        }
     }
 }
 
