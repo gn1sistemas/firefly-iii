@@ -58,12 +58,12 @@ return [
     'reports_report_audit_intro'            => 'Este relatório fornecerá informações detalhadas sobre suas contas de ativos.',
     'reports_report_audit_optionsBox'       => 'Use essas caixas de seleção para mostrar ou ocultar as colunas em que você está interessado.',
 
-    'reports_report_category_intro'                  => 'Este relatório lhe dará uma visão em uma ou várias categorias.',
-    'reports_report_category_pieCharts'              => 'Esses gráficos fornecerão informações sobre despesas e receitas por categoria ou por conta.',
-    'reports_report_category_incomeAndExpensesChart' => 'Este gráfico mostra suas despesas e receitas por categoria.',
+    'reports_report_category_intro'                  => 'Este relatório lhe dará uma visão em uma ou vários planos de contas.',
+    'reports_report_category_pieCharts'              => 'Esses gráficos fornecerão informações sobre despesas e receitas por plano de contas ou por conta.',
+    'reports_report_category_incomeAndExpensesChart' => 'Este gráfico mostra suas despesas e receitas por plano de contas.',
 
     'reports_report_tag_intro'                  => 'Este relatório lhe dará uma visão de um ou vários indexadores.',
-    'reports_report_tag_pieCharts'              => 'Esses gráficos fornecerão informações sobre despesas e receitas por indexador, conta, categoria ou orçamento.',
+    'reports_report_tag_pieCharts'              => 'Esses gráficos fornecerão informações sobre despesas e receitas por indexador, conta, plano de contas ou orçamento.',
     'reports_report_tag_incomeAndExpensesChart' => 'Este gráfico mostra suas despesas e receita por indexador.',
 
     'reports_report_budget_intro'                             => 'Este relatório lhe dará uma visão em um ou vários orçamentos.',
@@ -72,7 +72,7 @@ return [
 
     // create transaction
     'transactions_create_switch_box'                          => 'Use esses botões para mudar rapidamente o tipo de transação que deseja salvar.',
-    'transactions_create_ffInput_category'                    => 'Você pode digitar livremente neste campo. As categorias criadas anteriormente serão sugeridas.',
+    'transactions_create_ffInput_category'                    => 'Você pode digitar livremente neste campo. os planos de contas criadas anteriormente serão sugeridas.',
     'transactions_create_withdrawal_ffInput_budget'           => 'Vincule sua retirada a um orçamento para um melhor controle financeiro.',
     'transactions_create_withdrawal_currency_dropdown_amount' => 'Use este menu suspenso quando seu depósito estiver em outra moeda.',
     'transactions_create_deposit_currency_dropdown_amount'    => 'Use este menu suspenso quando seu depósito estiver em outra moeda.',
