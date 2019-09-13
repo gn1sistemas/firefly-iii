@@ -205,3 +205,12 @@ O item `import-account` corresponde ao identificador no banco de dados para a co
 *   Criar o CRUD de centros de custos;
 *   Trocar o design pelo template do Prosocio;
 *   Desenvolver suporte para multiusuários;
+
+## Imagens
+
+### Construção (MAC)
+
+```
+docker container run --name firefly -d -v firefly_iii_export:/var/www/firefly-iii/storage/export -v firefly_iii_upload:/var/www/firefly-iii/storage/upload -p 8080:80 -e APP_ENV=ABORL-CCF -e FF_APP_KEY=asljhf32q98fvaer8gvau8ASDUIhkasd -e APP_KEY=asljhf32q98fvaer8gvau8ASDUIhkasd -e DB_PORT=5432 -e FF_DB_PORT=5432 -e DB_CONNECTION=pgsql -e FF_DB_CONNECTION=pgsql -e DB_HOST=docker.for.mac.localhost -e  FF_DB_HOST=docker.for.mac.localhost -e DB_DATABASE=firefly -e FF_DB_NAME=firefly -e DB_USERNAME=postgres -e FF_DB_USER=postgres -e DB_PASSWORD=israel1207 -e FF_DB_PASSWORD=israel1207 firefly:cc2
+```
+
