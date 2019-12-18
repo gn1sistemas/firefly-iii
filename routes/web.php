@@ -263,6 +263,38 @@ Route::group(
 }
 );
 
+/**
+ * Cost Center Controller
+ */
+Route::group(
+    ['middleware' => 'user-full-auth', 'namespace' => 'FireflyIII\Http\Controllers', 'prefix' => 'cost-centers', 'as' => 'cost-centers.'], function () {
+
+    // index:
+    Route::get('', ['uses' => 'CostCenterController@index', 'as' => 'index']);
+
+    // create
+    Route::get('create', ['uses' => 'CostCenterController@create', 'as' => 'create']);
+    Route::post('store', ['uses' => 'CostCenterController@store', 'as' => 'store']);
+
+    // edit
+    Route::get('edit/{costCenter}', ['uses' => 'CostCenterController@edit', 'as' => 'edit']);
+    Route::post('update/{costCenter}', ['uses' => 'CostCenterController@update', 'as' => 'update']);
+
+    // delete
+    Route::get('delete/{costCenter}', ['uses' => 'CostCenterController@delete', 'as' => 'delete']);
+    Route::post('destroy/{costCenter}', ['uses' => 'CostCenterController@destroy', 'as' => 'destroy']);
+
+    // show cost center:
+    Route::get('show/{costCenter}/all', ['uses' => 'CostCenter\ShowController@showAll', 'as' => 'show.all']);
+    Route::get('show/{costCenter}/{start_date?}/{end_date?}', ['uses' => 'CostCenter\ShowController@show', 'as' => 'show']);
+
+    // no cost center controller:
+    Route::get('list/no-cost-center/all', ['uses' => 'CostCenter\NoCostCenterController@showAll', 'as' => 'no-cost-center.all']);
+    Route::get('list/no-cost-center/{start_date?}/{end_date?}', ['uses' => 'CostCenter\NoCostCenterController@show', 'as' => 'no-cost-center']);
+
+}
+);
+
 
 /**
  * Currency Controller
@@ -402,6 +434,48 @@ Route::group(
         Route::get(
             'operations/{accountList}/{categoryList}/{start_date}/{end_date}',
             ['uses' => 'CategoryReportController@mainChart', 'as' => 'main']
+        );
+
+    }
+);
+
+/**
+ * Chart\Cost Center Controller
+ */
+Route::group(
+    ['middleware' => 'user-full-auth', 'namespace' => 'FireflyIII\Http\Controllers\Chart', 'prefix' => 'chart/cost_center', 'as' => 'chart.cost_center.'],
+    function () {
+
+        Route::get('frontpage', ['uses' => 'CostCenterController@frontPage', 'as' => 'frontpage']);
+        Route::get('period/{costCenter}', ['uses' => 'CostCenterController@currentPeriod', 'as' => 'current']);
+        Route::get('period/{costCenter}/{date}', ['uses' => 'CostCenterController@specificPeriod', 'as' => 'specific']);
+        Route::get('all/{costCenter}', ['uses' => 'CostCenterController@all', 'as' => 'all']);
+        Route::get(
+            'report-period/0/{accountList}/{start_date}/{end_date}', ['uses' => 'CostCenterController@reportPeriodNoCostCenter', 'as' => 'period.no-cost-center']
+        );
+        Route::get('report-period/{costCenter}/{accountList}/{start_date}/{end_date}', ['uses' => 'CostCenterController@reportPeriod', 'as' => 'period']);
+
+        // these charts are used in reports (costCenter reports):
+        Route::get(
+            'costCenter/income/{accountList}/{costCenterList}/{start_date}/{end_date}/{others}',
+            ['uses' => 'CostCenterReportController@costCenterIncome', 'as' => 'cost-center-income']
+        );
+        Route::get(
+            'costCenter/expense/{accountList}/{costCenterList}/{start_date}/{end_date}/{others}',
+            ['uses' => 'CostCenterReportController@costCenterExpense', 'as' => 'cost-center-expense']
+        );
+        Route::get(
+            'account/income/{accountList}/{costCenterList}/{start_date}/{end_date}/{others}',
+            ['uses' => 'CostCenterReportController@accountIncome', 'as' => 'account-income']
+        );
+        Route::get(
+            'account/expense/{accountList}/{costCenterList}/{start_date}/{end_date}/{others}',
+            ['uses' => 'CostCenterReportController@accountExpense', 'as' => 'account-expense']
+        );
+
+        Route::get(
+            'operations/{accountList}/{costCenterList}/{start_date}/{end_date}',
+            ['uses' => 'CostCenterReportController@mainChart', 'as' => 'main']
         );
 
     }

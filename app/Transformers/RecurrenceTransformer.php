@@ -27,6 +27,7 @@ namespace FireflyIII\Transformers;
 use Carbon\Carbon;
 use FireflyIII\Exceptions\FireflyException;
 use FireflyIII\Factory\CategoryFactory;
+use FireflyIII\Factory\CostCenterFactory;
 use FireflyIII\Models\Recurrence;
 use FireflyIII\Models\RecurrenceMeta;
 use FireflyIII\Models\RecurrenceRepetition;
@@ -49,7 +50,9 @@ class RecurrenceTransformer extends AbstractTransformer
     /** @var BudgetRepositoryInterface */
     private $budgetRepos;
     /** @var CategoryFactory */
-    private $factory;
+    private $categoryFactory;
+    /** @var CostCenterFactory */
+    private $costCenterFactory;
     /** @var PiggyBankRepositoryInterface */
     private $piggyRepos;
     /** @var RecurringRepositoryInterface */
@@ -62,11 +65,12 @@ class RecurrenceTransformer extends AbstractTransformer
      */
     public function __construct()
     {
-        $this->repository  = app(RecurringRepositoryInterface::class);
-        $this->billRepos   = app(BillRepositoryInterface::class);
-        $this->piggyRepos  = app(PiggyBankRepositoryInterface::class);
-        $this->factory     = app(CategoryFactory::class);
-        $this->budgetRepos = app(BudgetRepositoryInterface::class);
+        $this->repository        = app(RecurringRepositoryInterface::class);
+        $this->billRepos         = app(BillRepositoryInterface::class);
+        $this->piggyRepos        = app(PiggyBankRepositoryInterface::class);
+        $this->categoryFactory   = app(CategoryFactory::class);
+        $this->costCenterFactory = app(CostCenterFactory::class);
+        $this->budgetRepos       = app(BudgetRepositoryInterface::class);
 
         if ('testing' === config('app.env')) {
             Log::warning(sprintf('%s should not be instantiated in the TEST environment!', \get_class($this)));
@@ -87,7 +91,8 @@ class RecurrenceTransformer extends AbstractTransformer
         $this->repository->setUser($recurrence->user);
         $this->billRepos->setUser($recurrence->user);
         $this->piggyRepos->setUser($recurrence->user);
-        $this->factory->setUser($recurrence->user);
+        $this->categoryFactory->setUser($recurrence->user);
+        $this->costCenterFactory->setUser($recurrence->user);
         $this->budgetRepos->setUser($recurrence->user);
 
         $shortType = (string)config(sprintf('firefly.transactionTypesToShort.%s', $recurrence->transactionType->type));
@@ -223,10 +228,17 @@ class RecurrenceTransformer extends AbstractTransformer
             ];
             switch ($transactionMeta->name) {
                 case 'category_name':
-                    $category = $this->factory->findOrCreate(null, $transactionMeta->value);
+                    $category = $this->categoryFactory->findOrCreate(null, $transactionMeta->value);
                     if (null !== $category) {
                         $transactionMetaArray['category_id']   = $category->id;
                         $transactionMetaArray['category_name'] = $category->name;
+                    }
+                    break;
+                case 'cost_center_name':
+                    $costCenter = $this->costCenterFactory->findOrCreate(null, $transactionMeta->value);
+                    if (null !== $costCenter) {
+                        $transactionMetaArray['cost_center_id']   = $costCenter->id;
+                        $transactionMetaArray['cost_center_name'] = $costCenter->name;
                     }
                     break;
                 case 'budget_id':

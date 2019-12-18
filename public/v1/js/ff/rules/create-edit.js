@@ -230,7 +230,12 @@ function updateActionInput(selectList) {
             console.log('Select list value is ' + selectList.val() + ', so input needs auto complete.');
             createAutoComplete(inputResult, 'json/categories');
             break;
+        case 'set_cost_center':
+            console.log('Select list value is ' + selectList.val() + ', so input needs auto complete.');
+            createAutoComplete(inputResult, 'json/cost-centers');
+            break;
         case 'clear_category':
+        case 'clear_cost_center':
         case 'clear_budget':
         case 'clear_notes':
         case 'remove_all_tags':
@@ -320,6 +325,10 @@ function updateTriggerInput(selectList) {
         case 'category_is':
             console.log('Select list value is ' + selectList.val() + ', so input needs auto complete.');
             createAutoComplete(inputResult, 'json/categories');
+            break;
+        case 'cost_center_is':
+            console.log('Select list value is ' + selectList.val() + ', so input needs auto complete.');
+            createAutoComplete(inputResult, 'json/cost-centers');
             break;
         case 'transaction_type':
             console.log('Select list value is ' + selectList.val() + ', so input needs auto complete.');

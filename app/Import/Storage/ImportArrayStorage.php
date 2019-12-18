@@ -99,7 +99,7 @@ class ImportArrayStorage
         $this->setStatus('storing_data');
         $collection = $this->storeArray();
         $this->setStatus('stored_data');
-
+        
         // link tag:
         $this->setStatus('linking_to_tag');
         $this->linkToTag($collection);
@@ -188,13 +188,14 @@ class ImportArrayStorage
     {
         $hash       = $this->getHash($transaction);
         $existingId = $this->hashExists($hash);
-        if (null !== $existingId) {
+        // TODO
+        /*if (null !== $existingId) {
             $message = sprintf('Row #%d ("%s") could not be imported. It already exists.', $index, $transaction['description']);
             $this->logDuplicateObject($transaction, $existingId);
             $this->repository->addErrorMessage($this->importJob, $message);
 
             return true;
-        }
+        }*/
 
         // do transfer detection:
         if ($this->checkForTransfers && $this->transferExists($transaction)) {
