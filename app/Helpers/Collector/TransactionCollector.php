@@ -342,8 +342,8 @@ class TransactionCollector implements TransactionCollectorInterface
     private static function setTransactionBalance(&$transaction, string &$initial_amount): void
     {
         // setting the balance
-        $initial_amount = bcadd($initial_amount, $transaction['transaction_amount']);
-        $transaction['amount_balance'] = $initial_amount;
+        $initial_amount = bcadd($initial_amount, $transaction->transaction_amount);
+        $transaction->amount_balance = $initial_amount;
     }
 
     /**
@@ -410,19 +410,7 @@ class TransactionCollector implements TransactionCollectorInterface
             $accountIds = $accounts->pluck('id')->toArray();
             $this->query->whereIn('transactions.account_id', $accountIds);
             Log::debug(sprintf('setAccounts: %s', implode(', ', $accountIds)));
-            $this->transactionsBalance =
-                $this
-                ->query
-                ->get(array_values($this->fields))
-                ->map(
-                    function ($transaction, $key) {
-                        return [
-                            'date' => $transaction->date,
-                            'transaction_amount' => $transaction->transaction_amount,
-                            'amount_balance' => $transaction->amount_balance,
-                        ];
-                    }
-                );
+            $this->loadAcountBalance();
             $this->accountIds = $accountIds;
         }
 
@@ -431,6 +419,11 @@ class TransactionCollector implements TransactionCollectorInterface
         }
 
         return $this;
+    }
+
+    public function loadAcountBalance()
+    {
+        $this->transactionsBalance = $this->query->get(array_values($this->fields));
     }
 
     /**
@@ -462,19 +455,7 @@ class TransactionCollector implements TransactionCollectorInterface
             $this->query->whereIn('transactions.account_id', $accountIds);
             $this->accountIds = $accountIds;
 
-            $this->transactionsBalance =
-                $this
-                ->query
-                ->get(array_values($this->fields))
-                ->map(
-                    function ($transaction, $key) {
-                        return [
-                            'date' => $transaction->date,
-                            'transaction_amount' => $transaction->transaction_amount,
-                            'amount_balance' => $transaction->amount_balance,
-                        ];
-                    }
-                );
+            $this->loadAcountBalance();
         }
 
         if ($accounts->count() > 1) {
