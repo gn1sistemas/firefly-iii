@@ -461,6 +461,20 @@ class TransactionCollector implements TransactionCollectorInterface
             $accountIds = $accounts->pluck('id')->toArray();
             $this->query->whereIn('transactions.account_id', $accountIds);
             $this->accountIds = $accountIds;
+
+            $this->transactionsBalance =
+                $this
+                ->query
+                ->get(array_values($this->fields))
+                ->map(
+                    function ($transaction, $key) {
+                        return [
+                            'date' => $transaction->date,
+                            'transaction_amount' => $transaction->transaction_amount,
+                            'amount_balance' => $transaction->amount_balance,
+                        ];
+                    }
+                );
         }
 
         if ($accounts->count() > 1) {
@@ -610,7 +624,7 @@ class TransactionCollector implements TransactionCollectorInterface
      * @return TransactionCollectorInterface
      */
     public function setCostCenter(CostCenter $costCenter): TransactionCollectorInterface
-    {        
+    {
         $this->joinCostCenterTables();
 
         $this->query->where(
