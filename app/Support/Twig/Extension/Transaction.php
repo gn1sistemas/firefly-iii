@@ -103,8 +103,7 @@ class Transaction extends Twig_Extension
      */
     public function amountBalance(TransactionModel $transaction): string
     {
-        // at this point amount is always negative.
-        $amount   = (string)$transaction->amount_balance;
+        $amount   = app('steam')->balance($transaction->account, $transaction->date);
         $format   = '%s';
         $coloured = true;
 
