@@ -135,6 +135,10 @@ php artisan cache:clear
 
 ### Importação do MsMoney
 
+#### Exceções
+
+Antes de importar é preciso comentar as linhas de 202 a 208 do arquivo `app\Import\Storage\ImportArrayStorage.php` para não lançar exceção em linhas duplicadas.
+
 #### Manipulação do arquivo .qif
 
 Para este processo é utilizado o arquivo em `/database/import/Convert-QifToCsv.psm1`. A saída esperada é um arquivo `.csv`.
