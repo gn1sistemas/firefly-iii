@@ -95,6 +95,27 @@ class Transaction extends Twig_Extension
     }
 
     /**
+     * Can show the amount of a transaction, if that transaction has been collected by the journal collector.
+     *
+     * @param TransactionModel $transaction
+     *
+     * @return string
+     */
+    public function amountBalance(TransactionModel $transaction): string
+    {
+        $amount   = app('steam')->balance($transaction->account, $transaction->date);
+        $format   = '%s';
+        $coloured = true;
+
+        $currency                 = new TransactionCurrency;
+        $currency->symbol         = $transaction->transaction_currency_symbol;
+        $currency->decimal_places = $transaction->transaction_currency_dp;
+        $str                      = sprintf($format, app('amount')->formatAnything($currency, $amount, $coloured));
+
+        return $str;
+    }
+
+    /**
      * @param array $transaction
      *
      * @return string
