@@ -210,6 +210,10 @@ O item `import-account` corresponde ao identificador no banco de dados para a co
 *   Trocar o design pelo template do Prosocio;
 *   Desenvolver suporte para multiusuários;
 
+## Atualização do projeto com um branch original
+
+Identificou que a próxima versão `4.8` implementa novos métodos que excluíram o local onde é utilizada entidade "CostCenter". Nesse caso será necessária uma nova análise para ajuste das saídas desses métodos. 
+
 ## Imagens
 
 ### Construção (MAC)
