@@ -56,7 +56,14 @@ return [
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+
     'mandrill' => [
         'secret' => env('MANDRILL_SECRET'),
     ],
+
+    'prosocio' => [
+        'client_id' => env('PROSOCIO_CLIENT_ID'),
+        'client_secret' => env('PROSOCIO_SECRET_ID'),
+        'redirect' => env('PROSOCIO_REDIRECT_URL'),
+    ]
 ];

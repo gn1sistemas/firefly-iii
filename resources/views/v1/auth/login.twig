@@ -82,6 +82,12 @@
         {% if allowReset %}
             <a href="{{ URL.to('/password/reset') }}">{{ 'forgot_my_password'|_ }}</a>
         {% endif %}
+        <div class="row">
+            <div class="col-xs-12">
+            <hr>
+                <a href="{{ URL.to('/login/prosocio') }}" class="btn btn-warning btn-block btn-flat">Entrar com ProSócio</a>
+            </div>
+        </div>
     </div>
 {% endblock %}
 

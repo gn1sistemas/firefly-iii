@@ -38,10 +38,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->bootProsocioSocialite();
+
         Schema::defaultStringLength(191);
         if ('heroku' === config('app.env')) {
             URL::forceScheme('https');
-        }
+        }        
     }
 
     /**
@@ -50,5 +52,19 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Passport::ignoreMigrations();
+    }
+
+    private function bootProsocioSocialite()
+    {
+
+        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+        
+        $socialite->extend(
+            'prosocio',
+            function ($app) use ($socialite) {
+                $config = $app['config']['services.prosocio'];
+                return $socialite->buildProvider(ProsocioProvider::class, $config);
+            }
+        );
     }
 }

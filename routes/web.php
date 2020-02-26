@@ -64,6 +64,9 @@ Route::group(
     Route::get('profile/confirm-email-change/{token}', ['uses' => 'ProfileController@confirmEmailChange', 'as' => 'profile.confirm-email-change']);
     Route::get('profile/undo-email-change/{token}/{oldAddressHash}', ['uses' => 'ProfileController@undoEmailChange', 'as' => 'profile.undo-email-change']);
 
+    // For the users, the user must be logged in Prosocio
+    Route::get('login/prosocio', 'Auth\LoginController@redirectToProvider');
+    Route::get('login/prosocio/handle-callback', 'Auth\LoginController@handleProviderCallback');
 }
 );
 

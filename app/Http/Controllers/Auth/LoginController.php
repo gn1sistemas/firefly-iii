@@ -31,6 +31,8 @@ use Illuminate\Cookie\CookieJar;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Log;
+use Laravel\Socialite\Facades\Socialite;
+use Auth;
 
 /**
  * Class LoginController
@@ -173,5 +175,23 @@ class LoginController extends Controller
         $remember = $request->old('remember');
 
         return view('auth.login', compact('allowRegistration', 'email', 'remember', 'allowReset', 'pageTitle'));
+    }
+
+    public function redirectToProvider()
+    {
+        return Socialite::with('prosocio')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        $response = Socialite::with('prosocio')->user();
+
+        // TODO: Validation
+        if (!$response)
+            return redirect('/login');
+
+        Auth::login(User::find(1));
+
+        return redirect('/');
     }
 }
