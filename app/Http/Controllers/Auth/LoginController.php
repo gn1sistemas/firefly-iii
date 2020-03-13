@@ -190,7 +190,9 @@ class LoginController extends Controller
         if (!$response)
             return redirect('/login');
 
-        Auth::login(User::find(1));
+        $user = User::where('email', 'a@a.com')->first();
+        //Auth::login(User::find(1));
+        Auth::login($user);
 
         return redirect('/');
     }
