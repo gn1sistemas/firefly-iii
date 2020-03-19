@@ -214,6 +214,7 @@ return [
     'import_file'           => 'Importar arquivo',
     'configuration_file'    => 'Arquivo de configuração',
     'import_file_type'      => 'Tipo de arquivo de importação',
+    'csv_pipe'              => 'Um pipe (|)',
     'csv_comma'             => 'Uma vírgula (,)',
     'csv_semicolon'         => 'Um ponto e vírgula (;)',
     'csv_tab'               => 'Um Tab (invisível)',
