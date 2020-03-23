@@ -128,7 +128,7 @@ class ReportFormRequest extends Request
     {
         /** @var CostCenterRepositoryInterface $repository */
         $repository = app(CostCenterRepositoryInterface::class);
-        $set        = $this->get('cost_center');
+        $set        = $this->get('costCenter');
         $collection = new Collection;
         if (\is_array($set)) {
             foreach ($set as $costCenterId) {
@@ -259,7 +259,7 @@ class ReportFormRequest extends Request
     public function rules(): array
     {
         return [
-            'report_type' => 'in:audit,default,category,budget,tag,account',
+            'report_type' => 'in:audit,default,category,cost_center,budget,tag,account',
         ];
     }
 }

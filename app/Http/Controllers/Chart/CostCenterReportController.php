@@ -144,7 +144,7 @@ class CostCenterReportController extends Controller
         $helper->setStart($start);
         $helper->setEnd($end);
         $helper->setCollectOtherObjects(1 === (int)$others);
-        $chartData = $helper->generate('expense', 'cost_center');
+        $chartData = $helper->generate('expense', 'costCenter');
         $data      = $this->generator->pieChart($chartData);
 
         return response()->json($data);
@@ -174,7 +174,7 @@ class CostCenterReportController extends Controller
         $helper->setStart($start);
         $helper->setEnd($end);
         $helper->setCollectOtherObjects(1 === (int)$others);
-        $chartData = $helper->generate('income', 'cost_center');
+        $chartData = $helper->generate('income', 'costCenter');
         $data      = $this->generator->pieChart($chartData);
 
         return response()->json($data);

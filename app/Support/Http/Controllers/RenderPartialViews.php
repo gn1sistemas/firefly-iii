@@ -35,6 +35,7 @@ use FireflyIII\Repositories\Account\AccountRepositoryInterface;
 use FireflyIII\Repositories\Budget\BudgetRepositoryInterface;
 use FireflyIII\Repositories\Category\CategoryRepositoryInterface;
 use FireflyIII\Repositories\Tag\TagRepositoryInterface;
+use FireflyIII\Repositories\CostCenter\CostCenterRepositoryInterface;
 use Illuminate\Support\Collection;
 use Log;
 use Throwable;
@@ -245,9 +246,9 @@ trait RenderPartialViews
             return 'This is an unknown cost center. Apologies.';
         }
 
-        $journals = $popupHelper->byCategory($costCenter, $attributes);
+        $journals = $popupHelper->byCostCenter($costCenter, $attributes);
         try {
-            $view = view('popup.report.category-entry', compact('journals', 'category'))->render();
+            $view = view('popup.report.cost_center-entry', compact('journals', 'cost_center'))->render();
         } catch (Throwable $e) {
             Log::error(sprintf('Could not render: %s', $e->getMessage()));
             $view = 'Firefly III could not render the view. Please see the log files.';

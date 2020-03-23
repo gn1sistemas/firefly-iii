@@ -22,7 +22,7 @@
 /** @noinspection PhpUndefinedMethodInspection */
 declare(strict_types=1);
 
-namespace FireflyIII\Generator\Report\Category;
+namespace FireflyIII\Generator\Report\CostCenter;
 
 use Carbon\Carbon;
 use FireflyIII\Generator\Report\ReportGeneratorInterface;
@@ -47,8 +47,8 @@ class MonthReportGenerator extends Support implements ReportGeneratorInterface
 {
     /** @var Collection The included accounts */
     private $accounts;
-    /** @var Collection The included categories */
-    private $categories;
+    /** @var Collection The included costCenters */
+    private $costCenters;
     /** @var Carbon The end date */
     private $end;
     /** @var Collection The expenses */
@@ -74,33 +74,33 @@ class MonthReportGenerator extends Support implements ReportGeneratorInterface
      */
     public function generate(): string
     {
-        $accountIds      = implode(',', $this->accounts->pluck('id')->toArray());
-        $categoryIds     = implode(',', $this->categories->pluck('id')->toArray());
-        $reportType      = 'category';
-        $expenses        = $this->getExpenses();
-        $income          = $this->getIncome();
-        $accountSummary  = $this->getObjectSummary($this->summarizeByAccount($expenses), $this->summarizeByAccount($income));
-        $categorySummary = $this->getObjectSummary($this->summarizeByCategory($expenses), $this->summarizeByCategory($income));
-        $averageExpenses = $this->getAverages($expenses, SORT_ASC);
-        $averageIncome   = $this->getAverages($income, SORT_DESC);
-        $topExpenses     = $this->getTopExpenses();
-        $topIncome       = $this->getTopIncome();
+        $accountIds         = implode(',', $this->accounts->pluck('id')->toArray());
+        $costCenterIds      = implode(',', $this->costCenters->pluck('id')->toArray());
+        $reportType         = 'cost_center';
+        $expenses           = $this->getExpenses();
+        $income             = $this->getIncome();
+        $accountSummary     = $this->getObjectSummary($this->summarizeByAccount($expenses), $this->summarizeByAccount($income));
+        $costCenterSummary  = $this->getObjectSummary($this->summarizeByCostCenter($expenses), $this->summarizeByCostCenter($income));
+        $averageExpenses    = $this->getAverages($expenses, SORT_ASC);
+        $averageIncome      = $this->getAverages($income, SORT_DESC);
+        $topExpenses        = $this->getTopExpenses();
+        $topIncome          = $this->getTopIncome();
 
         // render!
         try {
             return view(
-                'reports.category.month', compact(
-                                            'accountIds', 'categoryIds', 'topIncome', 'reportType', 'accountSummary', 'categorySummary', 'averageExpenses',
+                'reports.costCenter.month', compact(
+                                            'accountIds', 'costCenterIds', 'topIncome', 'reportType', 'accountSummary', 'costCenterSummary', 'averageExpenses',
                                             'averageIncome', 'topExpenses'
                                         )
             )
                 ->with('start', $this->start)->with('end', $this->end)
-                ->with('categories', $this->categories)
+                ->with('costCenters', $this->costCenters)
                 ->with('accounts', $this->accounts)
                 ->render();
         } catch (Throwable $e) {
-            Log::error(sprintf('Cannot render reports.category.month: %s', $e->getMessage()));
-            $result = 'Could not render report view.';
+            Log::error(sprintf('Cannot render reports.costCenter.month: %s', $e->getMessage()));
+            $result = 'Could not render report view.' . sprintf('Cannot render reports.costCenter.month: %s', $e->getMessage());
         }
 
         return $result;
@@ -135,14 +135,12 @@ class MonthReportGenerator extends Support implements ReportGeneratorInterface
     /**
      * Set the categories involved in this report.
      *
-     * @param Collection $categories
+     * @param Collection $costCenters
      *
      * @return ReportGeneratorInterface
      */
     public function setCategories(Collection $categories): ReportGeneratorInterface
     {
-        $this->categories = $categories;
-
         return $this;
     }
 
@@ -155,6 +153,8 @@ class MonthReportGenerator extends Support implements ReportGeneratorInterface
      */
     public function setCostCenters(Collection $costCenters): ReportGeneratorInterface
     {
+        $this->costCenters = $costCenters;
+
         return $this;
     }
 
@@ -227,7 +227,7 @@ class MonthReportGenerator extends Support implements ReportGeneratorInterface
         $collector = app(TransactionCollectorInterface::class);
         $collector->setAccounts($this->accounts)->setRange($this->start, $this->end)
                   ->setTypes([TransactionType::WITHDRAWAL, TransactionType::TRANSFER])
-                  ->setCategories($this->categories)->withOpposingAccount();
+                  ->setCostCenters($this->costCenters)->withOpposingAccount();
         $collector->removeFilter(TransferFilter::class);
 
         $collector->addFilter(OpposingAccountFilter::class);
@@ -254,7 +254,7 @@ class MonthReportGenerator extends Support implements ReportGeneratorInterface
         $collector = app(TransactionCollectorInterface::class);
         $collector->setAccounts($this->accounts)->setRange($this->start, $this->end)
                   ->setTypes([TransactionType::DEPOSIT, TransactionType::TRANSFER])
-                  ->setCategories($this->categories)->withOpposingAccount();
+                  ->setCostCenters($this->costCenters)->withOpposingAccount();
 
         $collector->addFilter(OpposingAccountFilter::class);
         $collector->addFilter(NegativeAmountFilter::class);
@@ -266,22 +266,22 @@ class MonthReportGenerator extends Support implements ReportGeneratorInterface
     }
 
     /**
-     * Summarize the category.
+     * Summarize the cost center.
      *
      * @param Collection $collection
      *
      * @return array
      */
-    private function summarizeByCategory(Collection $collection): array
+    private function summarizeByCostCenter(Collection $collection): array
     {
         $result = [];
         /** @var Transaction $transaction */
         foreach ($collection as $transaction) {
-            $jrnlCatId           = (int)$transaction->transaction_journal_category_id;
-            $transCatId          = (int)$transaction->transaction_category_id;
-            $categoryId          = max($jrnlCatId, $transCatId);
-            $result[$categoryId] = $result[$categoryId] ?? '0';
-            $result[$categoryId] = bcadd($transaction->transaction_amount, $result[$categoryId]);
+            $jrnlCostCenterId      = (int)$transaction->transaction_journal_cost_center_id;
+            $transCostCenterId     = (int)$transaction->transaction_cost_center_id;
+            $costCenterId          = max($jrnlCostCenterId, $transCostCenterId);
+            $result[$costCenterId] = $result[$costCenterId] ?? '0';
+            $result[$costCenterId] = bcadd($transaction->transaction_amount, $result[$costCenterId]);
         }
 
         return $result;

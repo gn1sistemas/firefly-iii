@@ -355,6 +355,7 @@ return [
         'budgetList'        => \FireflyIII\Support\Binder\BudgetList::class,
         'journalList'       => \FireflyIII\Support\Binder\JournalList::class,
         'categoryList'      => \FireflyIII\Support\Binder\CategoryList::class,
+        'costCenterList'    => \FireflyIII\Support\Binder\CostCenterList::class,
         'tagList'           => \FireflyIII\Support\Binder\TagList::class,
         'simpleJournalList' => \FireflyIII\Support\Binder\SimpleJournalList::class,
 

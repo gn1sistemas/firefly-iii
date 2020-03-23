@@ -113,6 +113,15 @@ function setOptionalFromCookies() {
     }
     $('#inputCategories').multiselect(defaultMultiSelect);
 
+    // cost-centers
+    if ((readCookie('report-cost-centers') !== null)) {
+        arr = readCookie('report-cost-centers').split(',');
+        arr.forEach(function (val) {
+            $('#inputCostCenters').find('option[value="' + encodeURI(val) + '"]').prop('selected', true);
+        });
+    }
+    $('#inputCostCenters').multiselect(defaultMultiSelect);
+
     // and budgets!
     if ((readCookie('report-budgets') !== null)) {
         arr = readCookie('report-budgets').split(',');
@@ -151,6 +160,7 @@ function catchSubmit() {
     // all account ids:
     var accounts = $('#inputAccounts').val();
     var categories = $('#inputCategories').val();
+    var costCenters = $('#inputCostCenters').val();
     var budgets = $('#inputBudgets').val();
     var tags = $('#inputTags').val();
     var expRev = $('#inputExpRevAccounts').val();
@@ -160,6 +170,7 @@ function catchSubmit() {
     createCookie('report-type', $('select[name="report_type"]').val(), 365);
     createCookie('report-accounts', accounts, 365);
     createCookie('report-categories', categories, 365);
+    createCookie('report-cost-centers', costCenters, 365);
     createCookie('report-budgets', budgets, 365);
     createCookie('report-tags', tags, 365);
     createCookie('report-exp-rev', expRev, 365);
