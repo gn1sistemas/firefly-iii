@@ -33,6 +33,7 @@ use Illuminate\Http\Request;
 use Log;
 use Laravel\Socialite\Facades\Socialite;
 use Auth;
+use Session;
 
 /**
  * Class LoginController
@@ -184,16 +185,15 @@ class LoginController extends Controller
 
     public function handleProviderCallback()
     {
-        $response = Socialite::with('prosocio')->user();
+        $user = Socialite::with('prosocio')->stateless()->user();
 
-        // TODO: Validation
-        if (!$response)
+        if (!$user->id){
+            Session::flash('info', trans('firefly.info_user_restricted_area'));
             return redirect('/login');
+        }
 
-        $user = User::where('email', 'a@a.com')->first();
-        //Auth::login(User::find(1));
-        Auth::login($user);
-
+        Auth::login(User::find(1));
+        
         return redirect('/');
     }
 }

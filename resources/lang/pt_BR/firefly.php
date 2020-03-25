@@ -593,6 +593,7 @@ return [
     'login_with_old_email'                    => 'Agora você pode fazer login novamente com o seu endereço de e-mail antigo.',
     'login_provider_local_only'               => 'Esta ação não está disponível durante a autenticação por meio de ":login_provider".',
     'delete_local_info_only'                  => 'Como você se autentica por meio de ":login_provider", isso irá apagar apenas informações locais do Firefly III.',
+    'info_user_restricted_area'               => 'Usuário com credenciais não permitidas para acessar esta área!',
 
     // attachments
     'nr_of_attachments'                       => 'Um anexo|:count anexos',

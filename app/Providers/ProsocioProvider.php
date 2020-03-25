@@ -27,6 +27,7 @@ namespace FireflyIII\Providers;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
 use Laravel\Socialite\Two\User;
+use GuzzleHttp\Client;
 
 class ProsocioProvider extends AbstractProvider implements ProviderInterface
 {
@@ -34,9 +35,18 @@ class ProsocioProvider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected function getAuthUrl($state)
+    protected function getAuthUrl($state = null)
     {
-        return $this->buildAuthUrlFromBase(env('PROSOCIO_URL_AUTHORIZE'), $state);
+        $fields = [
+            'client_id' => env('PROSOCIO_CLIENT_ID'),
+            'redirect_uri' => env('PROSOCIO_REDIRECT_URL'),
+            'grant_type' => 'authorization_code',
+            'response_type' => 'code',
+        ];
+
+        $fields = array_merge($fields, $this->parameters);
+
+        return env('PROSOCIO_URL_AUTHORIZE') . '?' . http_build_query($fields);
     }
 
     /**
@@ -75,13 +85,21 @@ class ProsocioProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get(env('PROSOCIO_URL_USER'), [
+
+        $client = new Client([
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
-            ],
-        ]);
+                ]
+            ]);
 
-        $res = $response->getBody();
+        $response = $client->request('GET', env('PROSOCIO_URL_USER'), [
+                'http_errors' => false
+            ]);
+        
+        if ($response->getStatusCode() != 200)
+            return [];
+
+        $res = $response->getBody()->getContents();
 
         return json_decode((string)$res, true);
     }
@@ -92,11 +110,15 @@ class ProsocioProvider extends AbstractProvider implements ProviderInterface
      */
     protected function mapUserToObject(array $user)
     {
-        return (new User)->setRaw($user)->map([
-            'id' => $user['id'],
-            'nickname' => $user['login'],
-            'name' => $user['name']
-        ]);
+        // usuário inválido (status diferente de 200)
+        if (empty($user))
+            return new User();
+
+        // hard code usuário 
+        $tempUser = new User();
+        $tempUser->id = 1; 
+
+        return $tempUser;
     }
 
 }
