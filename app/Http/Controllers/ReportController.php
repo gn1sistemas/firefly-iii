@@ -214,6 +214,44 @@ class ReportController extends Controller
         return $generator->generate();
     }
 
+    /** @noinspection MoreThanThreeArgumentsInspection */
+    /**
+     * Show cost centers report.
+     *
+     * @param Collection $accounts
+     * @param Collection $costCenters
+     * @param Carbon     $start
+     * @param Carbon     $end
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     *
+     * @throws \FireflyIII\Exceptions\FireflyException
+     */
+    public function costCenterReport(Collection $accounts, Collection $costCenters, Carbon $start, Carbon $end)
+    {
+        if ($end < $start) {
+            return view('error')->with('message', (string)trans('firefly.end_after_start_date')); // @codeCoverageIgnore
+        }
+        $this->repository->cleanupBudgets();
+
+        app('view')->share(
+            'subTitle',
+            trans(
+                'firefly.report_cost_center',
+                [
+                    'start' => $start->formatLocalized($this->monthFormat),
+                    'end'   => $end->formatLocalized($this->monthFormat),
+                ]
+            )
+        );
+
+        $generator = ReportGeneratorFactory::reportGenerator('CostCenter', $start, $end);
+        $generator->setAccounts($accounts);
+        $generator->setCostCenters($costCenters);
+
+        return $generator->generate();
+    }
+
     /**
      * Show default report.
      *
@@ -296,6 +334,9 @@ class ReportController extends Controller
             case 'account':
                 $result = $this->accountReportOptions();
                 break;
+            case 'cost_center':
+                $result = $this->costCenterReportOptions();
+                break;
         }
 
         return response()->json(['html' => $result]);
@@ -317,15 +358,16 @@ class ReportController extends Controller
     public function postIndex(ReportFormRequest $request)
     {
         // report type:
-        $reportType = $request->get('report_type');
-        $start      = $request->getStartDate()->format('Ymd');
-        $end        = $request->getEndDate()->format('Ymd');
-        $accounts   = implode(',', $request->getAccountList()->pluck('id')->toArray());
-        $categories = implode(',', $request->getCategoryList()->pluck('id')->toArray());
-        $budgets    = implode(',', $request->getBudgetList()->pluck('id')->toArray());
-        $tags       = implode(',', $request->getTagList()->pluck('id')->toArray());
-        $expense    = implode(',', $request->getExpenseList()->pluck('id')->toArray());
-        $uri        = route('reports.index');
+        $reportType     = $request->get('report_type');
+        $start          = $request->getStartDate()->format('Ymd');
+        $end            = $request->getEndDate()->format('Ymd');
+        $accounts       = implode(',', $request->getAccountList()->pluck('id')->toArray());
+        $categories     = implode(',', $request->getCategoryList()->pluck('id')->toArray());
+        $costCenters    = implode(',', $request->getCostCenterList()->pluck('id')->toArray());
+        $budgets        = implode(',', $request->getBudgetList()->pluck('id')->toArray());
+        $tags           = implode(',', $request->getTagList()->pluck('id')->toArray());
+        $expense        = implode(',', $request->getExpenseList()->pluck('id')->toArray());
+        $uri            = route('reports.index');
 
         if (0 === $request->getAccountList()->count()) {
             Log::debug('Account count is zero');
@@ -336,6 +378,12 @@ class ReportController extends Controller
 
         if ('category' === $reportType && 0 === $request->getCategoryList()->count()) {
             session()->flash('error', (string)trans('firefly.select_at_least_one_category'));
+
+            return redirect(route('reports.index'));
+        }
+
+        if ('cost_center' === $reportType && 0 === $request->getCostCenterList()->count()) {
+            session()->flash('error', (string) trans('firefly.select_at_least_one_cost_center'));
 
             return redirect(route('reports.index'));
         }
@@ -366,6 +414,9 @@ class ReportController extends Controller
             case 'category':
                 $uri = route('reports.report.category', [$accounts, $categories, $start, $end]);
                 break;
+            case 'cost_center':
+                $uri = route('reports.report.costCenter', [$accounts, $costCenters, $start, $end]);
+                break;
             case 'default':
                 $uri = route('reports.report.default', [$accounts, $start, $end]);
                 break;
@@ -382,7 +433,7 @@ class ReportController extends Controller
                 $uri = route('reports.report.account', [$accounts, $expense, $start, $end]);
                 break;
         }
-
+        
         return redirect($uri);
     }
 

@@ -65,6 +65,15 @@ interface ReportGeneratorInterface
     public function setCategories(Collection $categories): ReportGeneratorInterface;
 
     /**
+     * Set the involved cost center.
+     *
+     * @param Collection $cost center
+     *
+     * @return ReportGeneratorInterface
+     */
+    public function setCostCenters(Collection $costCenters): ReportGeneratorInterface;
+
+    /**
      * Set the end date.
      *
      * @param Carbon $date

@@ -105,6 +105,18 @@ class MultiYearReportGenerator implements ReportGeneratorInterface
     }
 
     /**
+     * Set the cost centers involved in this report.
+     *
+     * @param Collection $costCenters
+     *
+     * @return ReportGeneratorInterface
+     */
+    public function setCostCenters(Collection $costCenters): ReportGeneratorInterface
+    {
+        return $this;
+    }
+
+    /**
      * Sets the end date used in the report.
      *
      * @param Carbon $date

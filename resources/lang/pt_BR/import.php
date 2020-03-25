@@ -94,7 +94,7 @@ return [
     'job_config_file_upload_title'        => 'Import setup (1/4) - Upload your file',
     'job_config_file_upload_text'         => 'This routine will help you import files from your bank into Firefly III. ',
     'job_config_file_upload_help'         => 'Select your file. Please make sure the file is UTF-8 encoded.',
-    'job_config_file_upload_config_help'  => 'If you have previously imported data into Firefly III, you may have a configuration file, which will pre-set configuration values for you. For some banks, other users have kindly provided their <a href="https://github.com/firefly-iii/import-configurations/wiki">configuration file</a>',
+    'job_config_file_upload_config_help'  => '<p class="alert alert-info">Para prosseguir você deverá utilizar um dos arquivos configuração disponíveis: <ul><li><a href="v1/files/configuration_sga.json" download>Importar de transações do SGA</a></li></ul></p>',
     'job_config_file_upload_type_help'    => 'Select the type of file you will upload',
     'job_config_file_upload_submit'       => 'Carregar ficheiros',
     'import_file_type_csv'                => 'CSV (valores separados por vírgula)',

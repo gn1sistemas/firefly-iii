@@ -14,6 +14,16 @@
         {{ transaction|transactionIcon }}
     </td>
 
+    {# date #}
+    <td class="hidden-sm hidden-xs">
+        {{ transaction.date.formatLocalized(monthAndDayFormat) }}
+    </td>
+
+    {# dest #}
+    <td class="hidden-xs hidden-sm hidden-md">
+        {{ transaction|transactionDestinationAccount }}
+    </td>
+
     {# description #}
     <td>
         {# is reconciled? #}
@@ -31,22 +41,13 @@
 
     </td>
 
-    {# amount #}
-    <td style="text-align: right;"><span style="margin-right:5px;">{{ transaction|transactionAmount }}</span></td>
-
-    {# date #}
-    <td class="hidden-sm hidden-xs">
-        {{ transaction.date.formatLocalized(monthAndDayFormat) }}
-    </td>
-
     {# source #}
     <td class="hidden-xs hidden-sm hidden-md">
         {{ transaction|transactionSourceAccount }}
     </td>
-    {# dest #}
-    <td class="hidden-xs hidden-sm hidden-md">
-        {{ transaction|transactionDestinationAccount }}
-    </td>
+
+    {# amount #}
+    <td style="text-align: right;"><span style="margin-right:5px;">{{ transaction|transactionAmount }}</span></td>
 
     {# amount's sum #}
     <td style="text-align: right;"><span style="margin-right:5px;">{{ transaction|transactionAmountBalance }}</span></td>

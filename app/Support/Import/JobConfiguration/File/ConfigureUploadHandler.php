@@ -96,6 +96,7 @@ class ConfigureUploadHandler implements FileConfigurationInterface
     public function getNextData(): array
     {
         $delimiters            = [
+            '|'   => (string)trans('form.csv_pipe'),
             ','   => (string)trans('form.csv_comma'),
             ';'   => (string)trans('form.csv_semicolon'),
             'tab' => (string)trans('form.csv_tab'),
