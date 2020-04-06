@@ -107,7 +107,7 @@ return [
     'interest_date'               => 'Data de interesse',
     'book_date'                   => 'Data reserva',
     'process_date'                => 'Data de processamento',
-    'category'                    => 'plano de contas',
+    'category'                    => 'Plano de contas',
     'cost_center'                 => 'Centro de custo',
     'tags'                        => 'Etiquetas',
     'deletePermanently'           => 'Apagar permanentemente',
