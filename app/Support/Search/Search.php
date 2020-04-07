@@ -151,7 +151,7 @@ class Search implements SearchInterface
 
         /** @var TransactionCollectorInterface $collector */
         $collector = app(TransactionCollectorInterface::class);
-        $collector->setAllAssetAccounts()->setLimit($pageSize)->setPage($page)->withOpposingAccount();
+        $collector->setAllAssetAccounts()->setLimit($pageSize)->setPage($page)->withOpposingAccount()->withCategoryInformation()->withCostCenterInformation();
         if ($this->hasModifiers()) {
             $collector->withOpposingAccount()->withCategoryInformation()->withBudgetInformation();
         }

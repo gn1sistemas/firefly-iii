@@ -777,12 +777,44 @@ class TransactionCollector implements TransactionCollectorInterface
                             $q1->where('transaction_journals.description', 'LIKE', $keyword);
                         }
                     }
-                );
+                ); 
                 $q->orWhere(
                     function (EloquentBuilder $q2) use ($array) {
                         foreach ($array as $word) {
                             $keyword = sprintf('%%%s%%', $word);
                             $q2->where('transactions.description', 'LIKE', $keyword);
+                        }
+                    }
+                );
+                $q->orWhere(
+                    function (EloquentBuilder $q3) use ($array) {
+                        foreach ($array as $word) {
+                            $keyword = sprintf('%%%s%%', $word);
+                            $q3->where('accounts.name', 'LIKE', $keyword);
+                        }
+                    }
+                );
+                $q->orWhere(
+                    function (EloquentBuilder $q4) use ($array) {
+                        foreach ($array as $word) {
+                            $keyword = sprintf('%%%s%%', $word);
+                            $q4->where('opposing_accounts.name', 'LIKE', $keyword);
+                        }
+                    }
+                );
+                $q->orWhere(
+                    function (EloquentBuilder $q5) use ($array) {
+                        foreach ($array as $word) {
+                            $keyword = sprintf('%%%s%%', $word);
+                            $q5->where('transaction_categories.name', 'LIKE', $keyword);
+                        }
+                    }
+                );
+                $q->orWhere(
+                    function (EloquentBuilder $q6) use ($array) {
+                        foreach ($array as $word) {
+                            $keyword = sprintf('%%%s%%', $word);
+                            $q6->where('transaction_cost_centers.name', 'LIKE', $keyword);
                         }
                     }
                 );
