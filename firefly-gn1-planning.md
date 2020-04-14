@@ -1,6 +1,8 @@
 Planejamento de revisão do Firefly
 ==================================
 
+> Data: 14/04/2020
+
 ## Primeira etapa
 
 ### Reproduzir categorias para centro de custo
