@@ -224,3 +224,10 @@ Identificou que a próxima versão `4.8` implementa novos métodos que excluíra
 docker container run --name firefly -d -v firefly_iii_export:/var/www/firefly-iii/storage/export -v firefly_iii_upload:/var/www/firefly-iii/storage/upload -p 8080:80 -e APP_ENV=ABORL-CCF -e FF_APP_KEY=asljhf32q98fvaer8gvau8ASDUIhkasd -e APP_KEY=asljhf32q98fvaer8gvau8ASDUIhkasd -e DB_PORT=5432 -e FF_DB_PORT=5432 -e DB_CONNECTION=pgsql -e FF_DB_CONNECTION=pgsql -e DB_HOST=docker.for.mac.localhost -e  FF_DB_HOST=docker.for.mac.localhost -e DB_DATABASE=firefly -e FF_DB_NAME=firefly -e DB_USERNAME=postgres -e FF_DB_USER=postgres -e DB_PASSWORD=israel1207 -e FF_DB_PASSWORD=israel1207 firefly:cc2
 ```
 
+### Resolução de problema em produção
+
+Pode ocorrer um erro que impede a inicialização do serviço do Docker, por falta de espaço em disco no servidor. O problema pode ser por falta de espaço no disco, que pode ser verificado pelo comando `df`, ou por espaço ocupado por logs do próprio Docker.
+
+Neste caso utilize o tutorial [desde link](https://success.docker.com/article/no-space-left-on-device-error) para resolver o problema.
+
+Pode ser preciso acesso como administrador (super usário) para acessar as pastas internas do Docker, para isto, utilize o `sudo su`.
