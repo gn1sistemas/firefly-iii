@@ -161,7 +161,7 @@ function initCategoryAC() {
                                         }
                                     });
     categories.initialize();
-    $('input[name="category"]').typeahead({hint: true, highlight: true,}, {source: categories, displayKey: 'name', autoSelect: false});
+    $('input[name="category"]').typeahead({ hint: true, highlight: true, }, { source: categories, displayKey: 'name', autoSelect: false, limit: 15});
 }
 
 function initCostCenterAC() {
@@ -187,5 +187,5 @@ function initCostCenterAC() {
                                         }
                                     });
     costCenters.initialize();
-    $('input[name="cost_center"]').typeahead({hint: true, highlight: true,}, {source: costCenters, displayKey: 'name', autoSelect: false});
+    $('input[name="cost_center"]').typeahead({hint: true, highlight: true,}, {source: costCenters, displayKey: 'name', autoSelect: false, limit: 15});
 }
