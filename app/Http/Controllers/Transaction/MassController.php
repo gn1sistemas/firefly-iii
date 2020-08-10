@@ -149,7 +149,7 @@ class MassController extends Controller
         /** @var TransactionCollectorInterface $collector */
         $collector = app(TransactionCollectorInterface::class);
         $collector->setUser($user);
-        $collector->withOpposingAccount()->withCategoryInformation()->withBudgetInformation();
+        $collector->withOpposingAccount()->withCategoryInformation()->withCostCenterInformation()->withBudgetInformation();
         $collector->setJournals($journals);
         $collector->addFilter(TransactionViewFilter::class);
         $collector->addFilter(TransferFilter::class);
@@ -197,6 +197,7 @@ class MassController extends Controller
                     $destAccountName   = $request->get('destination_name')[$journal->id] ?? null;
                     $budgetId          = (int)($request->get('budget_id')[$journal->id] ?? 0.0);
                     $category          = $request->get('category')[$journal->id];
+                    $costCenter        = $request->get('cost_center')[$journal->id];
                     $tags              = $journal->tags->pluck('tag')->toArray();
                     $amount            = round($request->get('amount')[$journal->id], 12);
                     $foreignAmount     = isset($request->get('foreign_amount')[$journal->id]) ? round($request->get('foreign_amount')[$journal->id], 12) : null;
@@ -215,6 +216,8 @@ class MassController extends Controller
 
                                                 'category_id'           => null,
                                                 'category_name'         => $category,
+                                                'cost_center_id'        => null,
+                                                'cost_center_name'      => $costCenter,
                                                 'budget_id'             => $budgetId,
                                                 'budget_name'           => null,
                                                 'source_id'             => (int)$sourceAccountId,

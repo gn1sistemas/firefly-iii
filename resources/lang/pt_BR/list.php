@@ -66,7 +66,7 @@ return [
     'piggy_bank'              => 'Cofrinho',
     'to'                      => 'Para',
     'budget'                  => 'Orçamento',
-    'category'                => 'plano de contas',
+    'category'                => 'Plano de contas',
     'cost_center'             => 'Centro de Custo',
     'bill'                    => 'Fatura',
     'withdrawal'              => 'Retirada',

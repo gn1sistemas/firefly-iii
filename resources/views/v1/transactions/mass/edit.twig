@@ -27,6 +27,7 @@
                                 <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.from') }}</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.to') }}</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.category') }}</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.cost_center') }}</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.budget') }}</th>
                             </tr>
                             {% for transaction in transactions %}
@@ -103,6 +104,11 @@
                                     <td style="position: relative;">
                                         <input class="form-control input-sm" placeholder="{{ transaction.category_name }}" autocomplete="off"
                                                name="category[{{ transaction.journal_id }}]" type="text" value="{{ transaction.category_name }}">
+                                    </td>
+                                     {# costcenter #}
+                                    <td style="position: relative;">
+                                        <input class="form-control input-sm" placeholder="{{ transaction.cost_center_name }}" autocomplete="off"
+                                               name="cost_center[{{ transaction.journal_id }}]" type="text" value="{{ transaction.cost_center_name }}">
                                     </td>
                                     {# budget #}
                                     <td>

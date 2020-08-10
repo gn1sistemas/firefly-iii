@@ -873,6 +873,7 @@ return [
     'mass_bulk_journals_explain'              => 'Se você não quer mudar suas transações uma a uma, usando a função de edição em massa, você pode atualizá-los de uma só vez. Basta selecionar o plano de contas, tag(s) ou orçamento preferidos nos campos abaixo e todas as transações na tabela serão atualizadas.',
     'bulk_set_new_values'                     => 'Use as entradas abaixo para definir novos valores. Se você deixá-los vazios, eles serão feitos vazios para todos. Além disso, note que apenas as retiradas receberão um orçamento.',
     'no_bulk_category'                        => 'Não atualize o plano de contas',
+    'no_bulk_cost_center'                     => 'Não atualize o centro de custos',
     'no_bulk_budget'                          => 'Não atualize o orçamento',
     'no_bulk_tags'                            => 'Não atualize a(s) tag(s)',
     'bulk_edit'                               => 'Editar vários',

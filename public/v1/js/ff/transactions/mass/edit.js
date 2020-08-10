@@ -130,6 +130,31 @@ $(document).ready(function () {
                                     });
     categories.initialize();
 
-    $('input[name^="category["]').typeahead({hint: true, highlight: true,}, {source: categories, displayKey: 'name', autoSelect: false});
+    $('input[name^="category["]').typeahead({ hint: true, highlight: true, }, { source: categories, displayKey: 'name', autoSelect: false, limit: 15});
+
+    var costCenters = new Bloodhound({
+                                        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                                        prefetch: {
+                                            url: 'json/cost-centers?uid=' + uid,
+                                            filter: function (list) {
+                                                return $.map(list, function (name) {
+                                                    return { name: name };
+                                                });
+                                            }
+                                        },
+                                        remote: {
+                                            url: 'json/cost-centers?search=%QUERY&uid=' + uid,
+                                            wildcard: '%QUERY',
+                                            filter: function (list) {
+                                                return $.map(list, function (name) {
+                                                    return { name: name };
+                                                });
+                                            }
+                                        }
+                                    });
+    costCenters.initialize();
+
+    $('input[name^="cost_center["]').typeahead({ hint: true, highlight: true, }, { source: costCenters, displayKey: 'name', autoSelect: false, limit: 15 });
 
 });
