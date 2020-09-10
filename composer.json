@@ -85,6 +85,7 @@
     "league/flysystem-sftp": "1.*",
     "league/fractal": "0.*",
     "litipk/flysystem-fallback-adapter": "0.*",
+    "maatwebsite/excel": "3.1",
     "mschindler83/fints-hbci-php": "1.*",
     "pragmarx/google2fa-laravel": "0.*",
     "rcrowe/twigbridge": "0.9.*"
@@ -140,7 +141,8 @@
       "@php artisan passport:install"
     ],
     "post-install-cmd": [
-      "@php artisan firefly:instructions install"
+      "@php artisan firefly:instructions install",
+      "@php artisan vendor:publish --provider=\"Maatwebsite\\Excel\\ExcelServiceProvider\""
     ]
   },
   "config": {

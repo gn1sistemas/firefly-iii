@@ -289,6 +289,7 @@ return [
     'export_status_created_zip_file'             => 'Criado um arquivo zip!',
     'export_status_finished'                     => 'Exportação terminou com sucesso! Yay!',
     'export_data_please_wait'                    => 'Por favor aguarde...',
+    'export_transaction_excel'                   => 'Exportar transações para Excel',
 
     // rules
     'rules'                                      => 'Regras',

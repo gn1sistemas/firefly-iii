@@ -1,0 +1,56 @@
+<table>
+    <thead>
+        <tr>
+            <th align="center" colspan="8">{{ account.name }}</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>{{ trans('list.date') }}</th>
+            <th>{{ trans('list.to') }}</th>
+            <th>{{ trans('list.description') }}</th>
+            <th>{{ trans('list.from') }}</th>
+            <th>{{ trans('list.amount') }}</th>
+            <th>{{ trans('list.cost_center') }}</th>
+            <th>{{ trans('list.category') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+            <tr>
+
+                <td>
+                    {{ trans('firefly.' ~ transaction.transaction_type_type) }}
+                </td>
+
+                <td>
+                    {{ transaction.date.formatLocalized(monthAndDayFormat) }}
+                </td>
+
+                <td>
+                    {{ transaction.account_name }}
+                </td>
+
+                <td>
+                    {{ transaction|transactionReconciled }}
+
+                    {{ transaction|transactionDescription }}
+                    
+                    {{ transaction|transactionIsSplit }}
+
+                </td>
+
+                <td>
+                    {{ transaction.opposing_account_name }}
+                </td>
+
+                <td>{{ transaction|transactionAmount }}</td>
+
+                <td>{{ transaction.transaction_cost_center_name }}</td>
+                
+                <td>{{ transaction.transaction_category_name }}</td>
+                
+            </tr>
+
+        {% endfor %}
+    </tbody>
+</table>

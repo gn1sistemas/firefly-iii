@@ -961,6 +961,8 @@ Route::group(
     Route::get('debug/{tj}', ['uses' => 'Transaction\SingleController@debugShow', 'as' => 'debug']);
     Route::post('reorder', ['uses' => 'TransactionController@reorder', 'as' => 'reorder']);
     Route::post('reconcile', ['uses' => 'TransactionController@reconcile', 'as' => 'reconcile']);
+    Route::get('export/{account}/{start}/{end}', ['uses' => 'TransactionController@export', 'as' => 'export']);
+
 }
 );
 

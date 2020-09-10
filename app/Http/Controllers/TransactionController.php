@@ -34,6 +34,7 @@ use FireflyIII\Models\Attachment;
 use FireflyIII\Models\Transaction;
 use FireflyIII\Models\TransactionJournal;
 use FireflyIII\Models\TransactionType;
+use FireflyIII\Models\Account;
 use FireflyIII\Repositories\Attachment\AttachmentRepositoryInterface;
 use FireflyIII\Repositories\Journal\JournalRepositoryInterface;
 use FireflyIII\Repositories\LinkType\LinkTypeRepositoryInterface;
@@ -46,6 +47,9 @@ use Illuminate\Support\Collection;
 use Log;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use View;
+use FireflyIII\Exports\TransactionsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 /**
  * Class TransactionController.
@@ -268,5 +272,30 @@ class TransactionController extends Controller
         return view('transactions.show', compact('journal', 'attachments', 'events', 'subTitle', 'what', 'transactions', 'linkTypes', 'links'));
     }
 
+    
+    /**
+     * Donwnload report.
+     *
+     * @param Account $account
+     * @param string $start
+     * @param string $end
+     *
+     * @return \Maatwebsite\Excel\Facades\Excel
+     * 
+     * @throws 
+     */
+    public function export(Account $account, string $start, string $end)
+    {
+        ob_end_clean();
+
+        $collector = app(TransactionCollectorInterface::class);
+        $collector->setAccounts(new Collection([$account]))->withOpposingAccount()->withCategoryInformation()->withCostCenterInformation();
+        $collector->setRange(new Carbon($start), new Carbon($end));
+
+        return Excel::download(new TransactionsExport($collector, $account), $account->name . '.xlsx');
+
+        ob_flush();
+        
+    }
 
 }

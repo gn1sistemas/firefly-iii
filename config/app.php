@@ -76,7 +76,7 @@ return [
         // own stuff:
 //        TwigBridge\ServiceProvider::class,
         PragmaRX\Google2FALaravel\ServiceProvider::class,
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * More service providers.
@@ -145,6 +145,7 @@ return [
         'Steam'         => \FireflyIII\Support\Facades\Steam::class,
         'ExpandedForm'  => \FireflyIII\Support\Facades\ExpandedForm::class,
         'Google2FA'     => PragmaRX\Google2FALaravel\Facade::class,
+        'Excel'         => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
