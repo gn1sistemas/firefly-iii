@@ -82,18 +82,20 @@ class SecureHeaders
         ];
 
         $disableFrameHeader = config('firefly.disable_frame_header');
+        
         if (false === $disableFrameHeader || null === $disableFrameHeader) {
-            $response->header('X-Frame-Options', 'deny');
+            $response->headers->set('X-Frame-Options', 'deny');
         }
 
         // content security policy may be set elsewhere.
         if (!$response->headers->has('Content-Security-Policy')) {
-            $response->header('Content-Security-Policy', implode('; ', $csp));
+            $response->headers->set('Content-Security-Policy', implode('; ', $csp));
         }
-        $response->header('X-XSS-Protection', '1; mode=block');
-        $response->header('X-Content-Type-Options', 'nosniff');
-        $response->header('Referrer-Policy', 'no-referrer');
-        $response->header('Feature-Policy', implode('; ', $featurePolicies));
+        $response->headers->set('X-XSS-Protection', '1; mode=block');
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+        $response->headers->set('Referrer-Policy', 'no-referrer');
+        $response->headers->set('Feature-Policy', implode('; ', $featurePolicies));
+
 
         return $response;
     }
